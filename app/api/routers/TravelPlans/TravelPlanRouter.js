@@ -9,14 +9,18 @@ let TravelPlanRouter = new BaseRouter({
         getAll: {
             method: 'get',
             callback: (req, res) => {
-                res.send(DataGenerator.get({record_type: 'travel_plan', size: 10}));
+                res.send(
+                    {data: DataGenerator.get({record_type: 'travel_plan', size: 10})
+                });
             }
         },
         getOne: {
             method: 'get',
             url: ':id',
             callback: (req, res) => {
-                res.send(DataGenerator.get({record_type: 'travel_plan', size: 1}));
+                res.send(
+                    {data: DataGenerator.get({record_type: 'travel_plan', size: 1})
+                });
             }
         },
         create: {

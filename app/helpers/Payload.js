@@ -28,10 +28,14 @@ module.exports = class Payload {
         return this.responsePayload.errors.error_length;
     }
 
+    checkErrorStatus(){
+        return this.errorLength > 0;
+    }
+
     setResponse(response, key){
         if(key == null){
             if(response.errors){
-                this.responsePayload['errors']['user'] = response.errors;
+                this.responsePayload['errors']['data'] = response.errors;
                 this.responsePayload['errors'].error_length = this.responsePayload['errors'].error_length + response.errors.length;
             }else{
                 this.responsePayload['response'] = response;

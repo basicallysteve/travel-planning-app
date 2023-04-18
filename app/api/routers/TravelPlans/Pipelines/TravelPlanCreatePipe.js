@@ -5,7 +5,10 @@ let TravelPlanCreatePipeRunner = new TaskRunner({
     tasks: [
         {
             params: ['planner'],
-            task: CreateUserTask
+            task: CreateUserTask,
+            skip: (payload) => {
+                return payload.data.planner == null;
+            }
         },
         CreateTravelPlanTask
     ]

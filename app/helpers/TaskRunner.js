@@ -15,10 +15,15 @@ module.exports = class {
     runTasks() {
         let payload = this._payload;
         for(let task of this._tasks){
+            if(payload.checkErrorStatus()){
+                break;
+            }
             if(task instanceof Object && !(task instanceof Function)){
                 let params = task.params ?? [];
                 let taskFn = task.task;
-                payload = taskFn(payload, ...params);
+                if(task.skip && !task.skip(payload)){
+                    payload = taskFn(payload, ...params);
+                }
             }else{
                 payload = task(payload)
             }
