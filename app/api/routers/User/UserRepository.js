@@ -16,12 +16,12 @@ let repo = {
         }
     },
     getAllUsers(){
-        return DataGenerator.get({record_type: 'user', size: 10});
+        return {data: DataGenerator.get({record_type: 'user', size: 10})};
     },
     getUserById(userId){
-        return DataGenerator.get({record_type: 'user', size: 1});
+        return {data: {...DataGenerator.get({record_type: 'user', size: 1}), user_id: userId}};
     },
-    updateUser(user){
+    updateUser({user}){
         let errors = this.updateValidator(user);
         if(errors.length > 0){
             return {errors: errors};
@@ -30,7 +30,7 @@ let repo = {
         }
     },
     deleteUser(userId){
-        return {user_id: userId};
+        return {user_id: userId, deleted_at: new Date()};
     }
 }
 

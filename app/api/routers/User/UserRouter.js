@@ -1,7 +1,7 @@
 const router = require('express').Router();
 const BaseRouter = require('../BaseRouter');
 const DataGenerator = require("../../../models/index");
-
+const Payload = require("../../../helpers/Payload");
 let UserRouter = new BaseRouter({
     baseUrl: '/users',
     router: router,
@@ -9,26 +9,30 @@ let UserRouter = new BaseRouter({
         getAll: {
             method: 'get',
             callback: (req, res, next)=>{
-                res.send(DataGenerator.get({record_type: 'user', size: 10}));
+                let repo = require("./UserRepository");
+                res.send(repo.getAllUsers());
             }
         },
         getSingle: {
             method: 'get',
             url: ':id',
             callback: (req, res, next)=>{
-                res.send(DataGenerator.get({record_type: 'user', size: 1}));
+                let repo = require("./UserRepository");
+                res.send(repo.getUserById(req.params.id));
             }
         },
         create: {
             method: 'post',
             callback: (req, res, next)=>{
-                let validator = require("./Validator").createValidator;
-                let errors = validator(req.body.user);
-                if(errors.length > 0){
-                    res.status(400).send(errors);
+                let pipe = require("./Pipelines/UserCreatePipe");
+                let payload = new Payload(req.body, [
+                    'user',
+                ]);
+                payload = pipe.run(payload);
+                if(payload.checkErrorStatus()){
+                    res.status(400).send(payload.getErrors());
                 }else{
-                    let primaryKey = DataGenerator.get({record_type: 'id', size: 1});
-                    res.send({user_id: primaryKey, ...req.body.user});
+                    res.send(payload.getResponse());
                 }
             }
         },
@@ -36,13 +40,15 @@ let UserRouter = new BaseRouter({
             method: 'put',
             url: ':id',
             callback: (req, res, next)=>{
-                let validator = require("./Validator").updateValidator;
-
-                let errors = validator(req.body.user);
-                if(errors.length > 0){
-                    res.status(400).send(errors);
+                let pipe = require("./Pipelines/UserUpdatePipe");
+                let payload = new Payload(req.body, [
+                    'user',
+                ]);
+                payload = pipe.run(payload);
+                if(payload.checkErrorStatus()){
+                    res.status(400).send(payload.getErrors());
                 }else{
-                    res.send(req.body.user);
+                    res.send(payload.getResponse());
                 }
             }
         },
@@ -50,7 +56,18 @@ let UserRouter = new BaseRouter({
             method: 'delete',
             url: ':id',
             callback: (req, res, next)=>{
-                res.send({message: "User deleted"});
+                let pipe = require("./Pipelines/UserDeletePipe");
+                let payload = new Payload({
+                    user_id: req.params.id,
+                }, [
+                    'user_id',
+                ]);
+                payload = pipe.run(payload);
+                if(payload.checkErrorStatus()){
+                    res.status(400).send(payload.getErrors());
+                }else{
+                    res.send(payload.getResponse());
+                }
             }
         },
     }

@@ -48,6 +48,7 @@ describe('Travel Plan Routes', ()=>{
         .expect('Content-Type', /json/)  
         .expect(200)
         .end((err, response)=>{
+            expect(response.status).toEqual(400);
             expect(response.body.data.error_length).toEqual(1);
             expect(response.body.data.data).toContain('Name is required')
         })
@@ -91,6 +92,7 @@ describe('Travel Plan Routes', ()=>{
         .expect('Content-Type', /json/)
         .expect(200)
         .end((err, response)=>{
+            expect(response.status).toEqual(400);
             expect(response.body.data.error_length).toEqual(1);
             expect(response.body.data.data).toContain('Planner is required')
         })
