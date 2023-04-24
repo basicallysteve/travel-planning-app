@@ -11,9 +11,12 @@ function Input ({type, value, id, name, label, onUpdate, required = false, disab
     const onChange = (e) => {
         onUpdate && onUpdate(e.target.value)
     }
+
+    
     switch(type){
         case "text":
         case "email":
+        case "password":
             return (
                 <Form.Group controlId={id}>
 

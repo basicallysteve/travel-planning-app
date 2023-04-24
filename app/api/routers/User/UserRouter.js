@@ -3,7 +3,7 @@ const BaseRouter = require('../BaseRouter');
 const DataGenerator = require("../../../models/index");
 const Payload = require("../../../helpers/Payload");
 let UserRouter = new BaseRouter({
-    baseUrl: '/users',
+    baseUrl: 'users',
     router: router,
     routingInfo: {
         getAll: {

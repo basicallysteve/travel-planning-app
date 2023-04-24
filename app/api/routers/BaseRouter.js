@@ -1,7 +1,7 @@
 class BaseRouter {
     constructor({ baseUrl, router, routingInfo = {}}) {
         this.router = router;
-        this.baseUrl = baseUrl;
+        this.baseUrl = `/api/${baseUrl}`;
         this.routingInfo = routingInfo;
 
         this.setRoutes();

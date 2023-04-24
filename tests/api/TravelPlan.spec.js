@@ -8,7 +8,7 @@ app.use(require("../../app/api/routers/TravelPlans/TravelPlanRouter"));
 describe('Travel Plan Routes', ()=>{
     it("should create a planner with the travel plan", ()=>{
         request(app)
-        .post('/travel-plans')
+        .post('/api/travel-plans')
         .send({
             "travel_plan": {
                 "name": "Honeymoon Trip",
@@ -35,7 +35,7 @@ describe('Travel Plan Routes', ()=>{
 
     it("should fail validation for creating a travel plan", ()=>{
         request(app)
-        .post('/travel-plans')
+        .post('/api/travel-plans')
         .send({
             "travel_plan": {
                 "country": {
@@ -57,7 +57,7 @@ describe('Travel Plan Routes', ()=>{
 
     it("should update a travel plan", ()=>{
         request(app)
-        .put('/travel-plans/1')
+        .put('/api/travel-plans/1')
         .send({
             "travel_plan": {
                 'travel_plan_id': 1,
@@ -81,7 +81,7 @@ describe('Travel Plan Routes', ()=>{
 
     it("should fail validation for updating a travel plan", ()=>{
         request(app)
-        .put('/travel-plans/1')
+        .put('/api/travel-plans/1')
         .send({
             "travel_plan": {
                 'travel_plan_id': 1,
@@ -100,7 +100,7 @@ describe('Travel Plan Routes', ()=>{
 
     it("should get all travel plans", ()=>{
         request(app)
-        .get('/travel-plans')
+        .get('/api/travel-plans')
         .set('Accept', 'application/json')
         .expect('Content-Type', /json/)
         .expect(200)
@@ -111,7 +111,7 @@ describe('Travel Plan Routes', ()=>{
 
     it("should get all travel plans", ()=>{
         request(app)
-        .get('/travel-plans/1')
+        .get('/api/travel-plans/1')
         .set('Accept', 'application/json')
         .expect('Content-Type', /json/)
         .expect(200)
@@ -123,7 +123,7 @@ describe('Travel Plan Routes', ()=>{
 
     it("should delete a travel plan", ()=>{
         request(app)
-        .delete('/travel-plans/1')
+        .delete('/api/travel-plans/1')
         .set('Accept', 'application/json')
         .expect('Content-Type', /json/)
         .expect(200)

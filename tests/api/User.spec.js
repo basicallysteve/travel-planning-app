@@ -8,7 +8,7 @@ app.use(require("../../app/api/routers/User/UserRouter"));
 describe('User Routes', ()=>{
     it("should create a user", ()=>{
         request(app)
-        .post('/users')
+        .post('/api/users')
         .send({
             "user": {
                 "name": "Steven",
@@ -29,7 +29,7 @@ describe('User Routes', ()=>{
 
     it("should fail validation for creating a user", ()=>{
         request(app)
-        .post('/users')
+        .post('/api/users')
         .send({
             "user": {
                 "name": null,
@@ -51,7 +51,7 @@ describe('User Routes', ()=>{
 
     it("should update a user", ()=>{
         request(app)
-        .put('/users/1')
+        .put('/api/users/1')
         .send({
             "user": {
                 'user_id': 1,
@@ -73,7 +73,7 @@ describe('User Routes', ()=>{
 
     it("should fail validation for updating a user", ()=>{
         request(app)
-        .put('/users/1')
+        .put('/api/users/1')
         .send({
             "user": {
                 "name": null,
@@ -94,7 +94,7 @@ describe('User Routes', ()=>{
 
     it("should get all users", ()=>{
         request(app)
-        .get('/users')
+        .get('/api/users')
         .set('Accept', 'application/json')
         .expect('Content-Type', /json/)
         .expect(200)
@@ -105,7 +105,7 @@ describe('User Routes', ()=>{
 
     it("should get all users", ()=>{
         request(app)
-        .get('/users/1')
+        .get('/api/users/1')
         .set('Accept', 'application/json')
         .expect('Content-Type', /json/)
         .expect(200)
@@ -117,7 +117,7 @@ describe('User Routes', ()=>{
 
     it("should delete a user", ()=>{
         request(app)
-        .delete('/users/1')
+        .delete('/api/users/1')
         .set('Accept', 'application/json')
         .expect('Content-Type', /json/)
         .expect(200)

@@ -4,7 +4,7 @@ const DataGenerator = require("../../../models/index");
 const Payload = require("../../../helpers/Payload");
 let TravelPlanRouter = new BaseRouter({
     router,
-    baseUrl: '/travel-plans',
+    baseUrl: 'travel-plans',
     routingInfo: {
         getAll: {
             method: 'get',
