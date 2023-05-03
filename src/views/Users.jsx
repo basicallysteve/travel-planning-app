@@ -41,7 +41,7 @@ function Users({}){
                             <td>{user.last_name}</td>
                             <td>{user.email}</td>
                             <td>
-                                <Link to={`/users/${user.user_id}`} state={{user}}><Button variant="primary">Edit</Button></Link>
+                                <Link to={`/users/${user.user_id}`}><Button variant="primary">Edit</Button></Link>
                                 <Button variant="danger" onClick={()=> removeUser(user.user_id)}>Delete</Button>
                             </td>
                         </tr>

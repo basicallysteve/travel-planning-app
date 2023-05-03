@@ -2,15 +2,29 @@ import React from 'react';
 import ReactDOM from 'react-dom/client';
 import './index.css';
 import reportWebVitals from './reportWebVitals';
-import { createBrowserRouter, RouterProvider } from 'react-router-dom';
+import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import routes from "./routes";
 import 'bootstrap/dist/css/bootstrap.min.css';
-
+import MainNavigation from "./navigation/MainNav";
+import { Container } from "react-bootstrap";
 const root = ReactDOM.createRoot(document.getElementById('root'));
-const router = createBrowserRouter(routes);
+
 root.render(
   <React.StrictMode>
-    <RouterProvider router={router} />
+    <Container>
+      <BrowserRouter>
+        <MainNavigation />
+        <Routes>
+          {routes.map((route, i) => (
+            <Route
+              key={i}
+              path={route.path}
+              element={route.element}
+            />
+          ))}
+        </Routes>
+      </BrowserRouter>
+    </Container>
   </React.StrictMode>
 );
 

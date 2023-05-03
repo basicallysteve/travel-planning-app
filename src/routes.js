@@ -11,7 +11,7 @@ let routes = [
         element: <User />
     },
     {
-        path: "/users/:id",
+        path: "/users/:user_id",
         element: <User />
     },
     {

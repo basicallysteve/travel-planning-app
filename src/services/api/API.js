@@ -17,6 +17,9 @@ class API {
             case "axios":
                 this.adapter = new AxiosAdapter({ baseUrl, headers });
                 break;
+            case "test":
+                this.adapter = new TestAdapter({ baseUrl, headers, model });
+                break;
             default:
                 throw new Error("Invalid driver");
         }
@@ -88,5 +91,60 @@ class AxiosAdapter extends ApiAdapterInterface {;
     }
 
 }
+
+class TestAdapter extends ApiAdapterInterface {
+    constructor({ baseUrl, headers, model }) {
+        super();
+        this.baseUrl = baseUrl;
+        this.headers = headers;
+        this.model = model;
+    }
+
+    get primaryKey(){
+        return `${_.snakeCase(this.model)}_id`;
+    }
+
+
+    getAll({params = {}}) {
+        return new Promise((resolve, reject) => {
+            setTimeout(() => {
+                resolve({ data: { data: [{ [this.primarKey]: 1, name: "test" }] } });
+            }, 1000);
+        });
+    }
+
+    get({ id, params = {} }) {
+        return new Promise((resolve, reject) => {
+            setTimeout(() => {
+                resolve({ data: { data: { [this.primarKey]: 1, name: "test" } } });
+            }, 1000);
+        });
+    }
+
+    post(payload) {
+        return new Promise((resolve, reject) => {
+            setTimeout(() => {
+                resolve({ data: { data: { [this.primarKey]: 1, name: "test" } } });
+            }, 1000);
+        });
+    }
+
+    put({ id, data }) {
+        return new Promise((resolve, reject) => {
+            setTimeout(() => {
+                resolve({ data: { data: { [this.primarKey]: 1, name: "test" } } });
+            }, 1000);
+        });
+    }
+
+    delete({ id }) {
+        return new Promise((resolve, reject) => {
+            setTimeout(() => {
+                resolve({ data: { data: { [this.primarKey]: 1, name: "test" } } });
+            }, 1000);
+        });
+    }
+}
+
 
 export default API;

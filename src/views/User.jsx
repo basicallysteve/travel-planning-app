@@ -1,10 +1,12 @@
 import Input from '../components/Input'
-import { useState, useMemo } from "react"
+import { useState, useMemo, useEffect } from "react"
 import Form from 'react-bootstrap/Form';
 import Button from 'react-bootstrap/Button';
 import UserAPI from "../services/api/User"
-import { useLocation } from 'react-router-dom';
+import { useParams } from 'react-router-dom';
 function User ({user}){
+    let {createUser,fetchUser, updateUser, deleteUser} = new UserAPI().repo();
+
     user = user || {
         user_id: null,
         name: "",
@@ -14,18 +16,23 @@ function User ({user}){
         password_confirmation: ""
 
     }
-    
-    let {state} = useLocation()
-    if(state && state.user){
-        user = state.user
-    }
-    let {createUser, updateUser, deleteUser} = new UserAPI().repo();
+    let {user_id} = useParams();
+
+    useEffect(()=>{
+        if(user_id != null){
+            fetchUser({user: {user_id}}).then((response) => {
+                setStateFullUser(response.data.data)
+            });
+        }
+    }, [])
+   
+
     const [stateFullUser, setStateFullUser] = useState(user)
     const [validated, setValidated] = useState(false);
     const [errors, setErrors] = useState({})
 
     let passwordValid = useMemo(()=>{
-        return stateFullUser.password == stateFullUser.password_confirmation
+        return stateFullUser.password == stateFullUser.password_confirmation || stateFullUser.user_id != null
     },[stateFullUser.password, stateFullUser.password_confirmation])
 
     const updateUserField = (field, value) => {
@@ -44,17 +51,30 @@ function User ({user}){
         e.preventDefault()
         setValidated(true);
 
+        if(!stateFullUser.user_id){
+            createUser({user: stateFullUser}).then((response) => {
+                if(response.status == 400){
+                    setErrors(response.data.data)
+                }
+    
+                if(response.status == 200){
+                    setErrors([])
+                    setStateFullUser(response.data.data)
+                }
+            })
+        }else{
+            updateUser({user: stateFullUser}).then((response) => {
+                if(response.status == 400){
+                    setErrors(response.data.data)
+                }
+    
+                if(response.status == 200){
+                    setErrors([])
+                    setStateFullUser(response.data.data)
+                }
+            })
+        }
         
-        createUser({user: stateFullUser}).then((response) => {
-            if(response.status == 400){
-                setErrors(response.data.data)
-            }
-
-            if(response.status == 200){
-                setErrors([])
-                setStateFullUser(response.data.data)
-            }
-        })
     }
     let passwordInputs;
     
